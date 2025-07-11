@@ -4,18 +4,60 @@
 <head>
     <title>自己紹介</title>
     <meta charset="UTF-8">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" href="stylesheet.css">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
 </head>
 
+<button class="btn" id="btn">
+    Dropdown
+    <i class="bx bx-chevron-down" id="arrow"></i>
+</button>
+<div class="dropdown" id="dropdown">
+    <a href="#create">
+        <i class="bx bx-plus-circle"></i>
+        Create New
+    </a>
+    <a href="#draft">
+        <i class="bx bx-book"></i>
+        All Drafts
+    </a>
+    <a href="#move">
+        <i class="bx bx-folder"></i>
+        Move To
+    </a>
+    <a href="#profile">
+        <i class="bx bx-user"></i>
+        Profile Settings
+    </a>
+    <a href="#notification">
+        <i class="bx bx-bell"></i>
+        Notification
+    </a>
+    <a href="#settings">
+        <i class="bx bx-cog"></i>
+        Settings
+    </a>
+</div>
+
 <body>
-    <h1>・基本情報</h1>
-    <p>ハンドルネーム：ずがどん<br><br>
-        初のwebサイトづくり。<br>
-        ポケモンシリーズ好き。ハンドルネームの由来も当然そこから。<br>
-        ポケモンに関しては詳しめな方。本編、カード、GOやユナイトまではある程度わかる。<br>
+
+    <script src="sample.js"></script>
+
+    <h1 class="text">・基本情報</h1>
+    <p class="text">ハンドルネーム：ずがどん<br><br>
+        初のwebサイトづくりでございます。<br>
+        github pagesを使用してサイトを運営しています。
+    </p>
+    <a href="https://docs.github.com/ja/pages/getting-started-with-github-pages/about-github-pages" class="text">github
+        pages</a>
+
+    <h2 class="text">・趣味</h2>
+    <p class="text">ポケモンシリーズ好き。ハンドルネームの由来も当然そこから。<br>
+        ポケモンに関しては詳しめな方。本編USUM~SV、カード、GOやユナイトまではある程度わかる。<br>
         最近のマイブームはポケモン種族値クイズ。
     </p>
-    <a href="https://pokemon-shuzokuchi-quiz.kiyomaro.app/">良ければどうぞ</a>
-
+    <a href="https://pokemon-shuzokuchi-quiz.kiyomaro.app/" class="text">ポケモン種族値クイズ</a>
 </body>
 
 </html>
