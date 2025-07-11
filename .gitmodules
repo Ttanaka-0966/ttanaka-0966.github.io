@@ -1,0 +1,3 @@
+[submodule "BingoApp_typescript"]
+	path = BingoApp_typescript
+	url = git@github.com:tutrobo/BingoApp_typescript.git
