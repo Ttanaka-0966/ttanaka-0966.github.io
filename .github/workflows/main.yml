@@ -7,6 +7,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # リポジトリへの書き込み権限を許可
+      pages: write    # GitHub Pagesへのデプロイ権限を許可 (GitHub Pagesを使用する場合)
+      id-token: write # OpenID Connect (OIDC)を使用する場合 (actions-gh-pages@v3では必須ではないが、推奨される場合も)
+
     steps:
       - name: Checkout repository and submodules
         uses: actions/checkout@v4
