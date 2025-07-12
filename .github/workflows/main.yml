@@ -18,7 +18,7 @@ jobs:
 
           # ★プライベートサブモジュールをSSHでクローンするための設定
           submodules: true # サブモジュールをクローンすることを指定
-          ssh-key: ${{ mysshkey }} # 登録したSSH秘密鍵のシークレット名
+          ssh-key: ${{ secrets.mysshkey }} # 登録したSSH秘密鍵のシークレット名
 
       - name: Set up Node.js 
         uses: actions/setup-node@v4
