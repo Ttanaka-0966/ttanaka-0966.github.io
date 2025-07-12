@@ -19,7 +19,7 @@ jobs:
           # メインリポジトリをクローンするための設定
           repository: ${{ github.repository }}
           ref: ${{ github.ref }}
-          token: ${{ secrets.GITHUB_TOKEN }} # GitHub Pagesデプロイで必要
+          #token: ${{ secrets.GITHUB_TOKEN }} # GitHub Pagesデプロイで必要
 
           # ★プライベートサブモジュールをSSHでクローンするための設定
           submodules: true # サブモジュールをクローンすることを指定
