@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { useEffect } from "react";
 
-import { useMediaQuery } from 'react-responsive'
+import { useMediaQuery } from "react-responsive";
 const Desktop = ({ children }: { children: React.ReactNode }) => {
-  const isDesktop = useMediaQuery({ minWidth: 768 })
-  return isDesktop ? children : null
-}
-const Mobile = ({ children}: { children: React.ReactNode }) => {
-  const isMobile = useMediaQuery({ maxWidth: 767 })
-  return isMobile ? children : null
-}
+	const isDesktop = useMediaQuery({ minWidth: 768 });
+	return isDesktop ? children : null;
+};
+const Mobile = ({ children }: { children: React.ReactNode }) => {
+	const isMobile = useMediaQuery({ maxWidth: 767 });
+	return isMobile ? children : null;
+};
 
 interface SquareProps {
 	spot: number;
@@ -176,7 +176,7 @@ function Board({
 	);
 }
 
-function Game({ gameset }: { gameset: () => void }) {
+function Game({ gameset }: { gameset: (winner: string) => void }) {
 	const [historyB, setHistoryB] = useState<number[][]>([Array(9).fill(null)]);
 	const [historyR, setHistoryR] = useState<number[][]>([Array(9).fill(null)]);
 	const [currentMoveB, setCurrentMoveB] = useState(0);
@@ -207,7 +207,6 @@ function Game({ gameset }: { gameset: () => void }) {
 			description = "Go to game start";
 		} else {
 			description = "Go to game end";
-			gameset();
 		}
 		return (
 			<li key={description}>
@@ -223,12 +222,10 @@ function Game({ gameset }: { gameset: () => void }) {
 		currentSquaresR,
 		(currentMoveB + currentMoveR) / 2,
 	);
-
 	useEffect(() => {
-		if (winner) {
-			gameset();
-		}
-	}, [winner, gameset]);
+		if (!winner) return;
+		gameset(winner);
+	}, [gameset, winner]);
 
 	return (
 		<div className="game">
@@ -243,9 +240,16 @@ function Game({ gameset }: { gameset: () => void }) {
 			</div>
 			<div className="game-info">
 				<ol>{moves}</ol>
-				<button type="button" onClick={() => gameset()}>
-					gameset
+				{/*
+				<button
+					type="button"
+					onClick={() => {
+						gameset(winner);
+					}}
+				>
+					{`GameEnd ${winner}`}
 				</button>
+				*/}
 			</div>
 		</div>
 	);
@@ -279,8 +283,8 @@ function calculateWinner(squaresB: number[], squaresR: number[], move: number) {
 		)
 			Red_bingo++;
 	}
-	if (Blue_bingo >= 2) return "Blue";
-	if (Red_bingo >= 2) return "Red";
+	if (Blue_bingo >= 2) return "Winner is Blue";
+	if (Red_bingo >= 2) return "Winner is Red";
 
 	if (move >= 40) {
 		const sumB =
@@ -296,34 +300,26 @@ function calculateWinner(squaresB: number[], squaresR: number[], move: number) {
 			(squaresR[3] + squaresR[4] + squaresR[5]) * 2 +
 			(squaresR[6] + squaresR[7] + squaresR[8]) * 3;
 		const sum = Math.abs(sumB - sumR);
-		if (sumB > sumR) return `Blue:${sum}points`;
-		if (sumB < sumR) return `Red:${sum}points`;
+		if (sumB > sumR) return `Blue wins ${sum}points`;
+		if (sumB < sumR) return `Red wins ${sum}points`;
+		return "Draw";
 	}
 	return null;
 }
 
 interface ResultProps {
-	winner: string | null;
-	winningpoints: number;
+	winner: string;
 	Restart: () => void;
 }
 
-function Result({ winner, winningpoints, Restart }: ResultProps) {
-	let resultColor:string|null;
-	switch(winner){
-		case "Blue":
-			resultColor = "font-Blue";
-			break;
-		case "Red":
-			resultColor = "font-Red";
-			break;
-		default:
-			resultColor = "";
-			break;
-	}
-		return (
+function Result({ winner, Restart }: ResultProps) {
+	let resultColor: string | null;
+	if (winner.includes("Red")) resultColor = "font-Red";
+	else if (winner.includes("Blue")) resultColor = "font-Blue";
+	else resultColor = "";
+	return (
 		<div className="result">
-			<div className={resultColor}>{winner} wins! Winning:{winningpoints}</div>
+			<div className={resultColor}>Game Set! {winner}!</div>
 			<button type="button" onClick={Restart}>
 				{"Restart"}
 			</button>
@@ -333,6 +329,7 @@ function Result({ winner, winningpoints, Restart }: ResultProps) {
 
 export default function PageswitchWrapper() {
 	const [page, setPage] = useState(true);
+	const [Winner, setWinner] = useState<string>("");
 
 	return (
 		<>
@@ -340,17 +337,33 @@ export default function PageswitchWrapper() {
 				<>
 					<Desktop>
 						<div className="desktop">
-						<Game gameset={() => setPage(false)} />
-							</div>
+							<Game
+								gameset={(winner) => {
+									setPage(false);
+									setWinner(winner);
+								}}
+							/>
+						</div>
 					</Desktop>
 					<Mobile>
 						<div className="mobile">
-							<Game gameset={() => setPage(false)} />
+							<Game
+								gameset={(winner) => {
+									setPage(false);
+									setWinner(winner);
+								}}
+							/>
 						</div>
 					</Mobile>
 				</>
 			) : (
-				<Result winner={'Blue'} winningpoints={1} Restart={() => setPage(true)} />
+				<Result
+					winner={Winner}
+					Restart={() => {
+						setPage(true);
+						setWinner("");
+					}}
+				/>
 			)}
 		</>
 	);
