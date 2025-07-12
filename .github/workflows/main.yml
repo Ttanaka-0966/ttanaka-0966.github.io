@@ -5,7 +5,7 @@ on:
     branches:
       - main 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -14,20 +14,11 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
         with:
           repository: ${{ github.repository }}
           ref: ${{ github.ref }}
           token: ${{ secrets.GITHUB_TOKEN }} 
-
-      - name: Debug:Check file existence
-        run: |
-          echo "Root directory contents:"
-          ls -la
-          echo "BingoApp_typescript directory contents:"
-          ls -la BingoApp_typescript/
-          echo "Checking for package.json:"
-          test -f BingoApp_typescript/package.json && echo "package.json found!" || echo "package.json NOT found!"
 
       - name: Set up Node.js 
         uses: actions/setup-node@v4
@@ -41,11 +32,6 @@ jobs:
       - name: Build project
         run: npm run build
         working-directory: BingoApp_typescript
-
-      - name: Deploy to GitHub Pages 
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
