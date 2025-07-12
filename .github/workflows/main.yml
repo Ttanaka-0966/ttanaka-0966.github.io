@@ -20,7 +20,7 @@ jobs:
           ref: ${{ github.ref }}
           token: ${{ secrets.GITHUB_TOKEN }} 
 
-      - name: Debug: Check file existence
+      - name: Debug:Check file existence
         run: |
           echo "Root directory contents:"
           ls -la
