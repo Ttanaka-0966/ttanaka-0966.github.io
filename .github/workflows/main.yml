@@ -20,16 +20,12 @@ jobs:
           ref: ${{ github.ref }}
           token: ${{ secrets.GITHUB_TOKEN }} 
 
-      # ★★★ 簡略化されたデバッグ用のステップ ★★★
-      - name: Debug: List files and check package.json
-        run: |
-          echo "Listing files in root directory:"
-          ls -la
-          echo "Listing files in BingoApp_typescript directory:"
-          ls -la BingoApp_typescript/
-          echo "Checking for package.json in BingoApp_typescript:"
-          find BingoApp_typescript -name "package.json"
-          test -f BingoApp_typescript/package.json && echo "package.json found at direct path!" || echo "package.json NOT found at direct path!"
+      # ★★★ 最小限のデバッグ用のステップ ★★★
+      - name: Debug: List files in root directory
+        run: ls -la
+
+      - name: Debug: List files in BingoApp_typescript directory
+        run: ls -la BingoApp_typescript/
       # ★★★ ここまでデバッグ用のステップ ★★★
 
       - name: Set up Node.js 
