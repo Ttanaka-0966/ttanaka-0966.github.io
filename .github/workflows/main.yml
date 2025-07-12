@@ -21,10 +21,6 @@ jobs:
           ref: ${{ github.ref }}
           #token: ${{ secrets.GITHUB_TOKEN }} # GitHub Pagesデプロイで必要
 
-          # ★プライベートサブモジュールをSSHでクローンするための設定
-          submodules: true # サブモジュールをクローンすることを指定
-          token: ${{ secrets.BINGOAPP_TYPESCRIPT_PATKEY2 }} # 登録したSSH秘密鍵のシークレット名
-
       - name: Set up Node.js 
         uses: actions/setup-node@v4
         with:
