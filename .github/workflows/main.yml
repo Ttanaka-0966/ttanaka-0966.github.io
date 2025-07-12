@@ -8,36 +8,41 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # リポジトリへの書き込み権限を許可
-      pages: write    # GitHub Pagesへのデプロイ権限を許可 (GitHub Pagesを使用する場合)
-      id-token: write # OpenID Connect (OIDC)を使用する場合 (actions-gh-pages@v3では必須ではないが、推奨される場合も)
+      contents: write
+      pages: write
+      id-token: write
 
     steps:
-      - name: Checkout repository and submodules
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          # メインリポジトリをクローンするための設定
+          # メインリポジトリをクローンするための設定 (GITHUB_TOKENを使用)
           repository: ${{ github.repository }}
           ref: ${{ github.ref }}
-          #token: ${{ secrets.GITHUB_TOKEN }} # GitHub Pagesデプロイで必要
+          token: ${{ secrets.GITHUB_TOKEN }} # メインリポジトリはこれで十分
+
+          # ★サブモジュール関連の設定はすべて削除されていることを確認
+          # submodules: true 
+          # token: ${{ secrets.ORG_SUBMODULE_PAT }} 
+          # ssh-key: ${{ secrets.BINGOAPP_TYPESCRIPT_PATKEY }} 
 
       - name: Set up Node.js 
         uses: actions/setup-node@v4
         with:
-          node-version: '22.17.0' # ★あなたのプロジェクトに必要なNode.jsバージョンに合わせる
+          node-version: '22.17.0'
 
       - name: Install dependencies for BingoApp_typescript
         run: |
-          cd BingoApp_typescript # ★サブモジュールディレクトリに移動
+          cd BingoApp_typescript # ★これはそのまま
           npm install
 
       - name: Build project
         run: |
           cd BingoApp_typescript 
-          npm run build # ★あなたのビルドコマンドに合わせてください
+          npm run build
 
       - name: Deploy to GitHub Pages 
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          #publish_dir: ./ # ★デプロイするファイルのディレクトリに合わせてください (例: ./dist, ./buildなど)
+          #publish_dir: ./ 
