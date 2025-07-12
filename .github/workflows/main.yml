@@ -18,18 +18,21 @@ jobs:
         with:
           repository: ${{ github.repository }}
           ref: ${{ github.ref }}
-          token: ${{ secrets.GITHUB_TOKEN }} 
+          token: ${{ secrets.GITHUB_TOKEN }} # メインリポジトリはこれで十分
 
-      # ★★★ ここからデバッグ用のステップ ★★★
-      - name: List files in root directory
-        run: ls -la # リポジトリのルートディレクトリのファイルを確認
+          # ★サブモジュール関連の設定はすべて削除されていることを確認
+          # submodules: true 
+          # token: ${{ secrets.ORG_SUBMODULE_PAT }} 
+          # ssh-key: ${{ secrets.BINGOAPP_TYPESCRIPT_PATKEY }} 
 
-      - name: List files in BingoApp_typescript directory
-        run: ls -la BingoApp_typescript/ # BingoApp_typescriptディレクトリの中身を確認
+      - name: List files in root directory (Debug)
+        run: ls -la # デバッグ用
 
-      - name: Check for package.json in BingoApp_typescript
-        run: test -f BingoApp_typescript/package.json && echo "package.json found!" || echo "package.json NOT found!" # package.jsonの存在を直接確認
-      # ★★★ ここまでデバッグ用のステップ ★★★
+      - name: List files in BingoApp_typescript directory (Debug)
+        run: ls -la BingoApp_typescript/ # デバッグ用
+
+      - name: Check for package.json in BingoApp_typescript (Debug)
+        run: test -f BingoApp_typescript/package.json && echo "package.json found!" || echo "package.json NOT found!" # デバッグ用
 
       - name: Set up Node.js 
         uses: actions/setup-node@v4
