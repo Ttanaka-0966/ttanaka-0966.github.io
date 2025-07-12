@@ -20,13 +20,14 @@ jobs:
           ref: ${{ github.ref }}
           token: ${{ secrets.GITHUB_TOKEN }} 
 
-      # ★★★ 最小限のデバッグ用のステップ ★★★
-      - name: Debug: List files in root directory
-        run: ls -la
-
-      - name: Debug: List files in BingoApp_typescript directory
-        run: ls -la BingoApp_typescript/
-      # ★★★ ここまでデバッグ用のステップ ★★★
+      - name: Debug: Check file existence
+        run: |
+          echo "Root directory contents:"
+          ls -la
+          echo "BingoApp_typescript directory contents:"
+          ls -la BingoApp_typescript/
+          echo "Checking for package.json:"
+          test -f BingoApp_typescript/package.json && echo "package.json found!" || echo "package.json NOT found!"
 
       - name: Set up Node.js 
         uses: actions/setup-node@v4
@@ -45,4 +46,3 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          #publish_dir: ./ 
