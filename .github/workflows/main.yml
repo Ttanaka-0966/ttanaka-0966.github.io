@@ -18,21 +18,24 @@ jobs:
         with:
           repository: ${{ github.repository }}
           ref: ${{ github.ref }}
-          token: ${{ secrets.GITHUB_TOKEN }} # メインリポジトリはこれで十分
+          token: ${{ secrets.GITHUB_TOKEN }} 
 
-          # ★サブモジュール関連の設定はすべて削除されていることを確認
-          # submodules: true 
-          # token: ${{ secrets.ORG_SUBMODULE_PAT }} 
-          # ssh-key: ${{ secrets.BINGOAPP_TYPESCRIPT_PATKEY }} 
+      # ★★★ 新しい詳細デバッグ用のステップ ★★★
+      - name: Debug: List files in root directory
+        run: ls -la
 
-      - name: List files in root directory (Debug)
-        run: ls -la # デバッグ用
+      - name: Debug: List files in BingoApp_typescript directory
+        run: ls -la BingoApp_typescript/
 
-      - name: List files in BingoApp_typescript directory (Debug)
-        run: ls -la BingoApp_typescript/ # デバッグ用
+      - name: Debug: Find package.json within BingoApp_typescript recursively
+        run: find BingoApp_typescript -name "package.json"
+        # このコマンドは、BingoApp_typescriptディレクトリとそのサブディレクトリ内を
+        # 再帰的に検索し、"package.json"が見つかればそのパスを出力します。
+        # もし何も出力されなければ、Runnerはそのファイルを見つけていません。
 
-      - name: Check for package.json in BingoApp_typescript (Debug)
-        run: test -f BingoApp_typescript/package.json && echo "package.json found!" || echo "package.json NOT found!" # デバッグ用
+      - name: Debug: Check for package.json in BingoApp_typescript direct path
+        run: test -f BingoApp_typescript/package.json && echo "package.json found at direct path!" || echo "package.json NOT found at direct path!"
+      # ★★★ ここまでデバッグ用のステップ ★★★
 
       - name: Set up Node.js 
         uses: actions/setup-node@v4
