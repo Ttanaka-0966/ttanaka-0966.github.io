@@ -33,13 +33,15 @@ jobs:
 
       - name: Install dependencies for BingoApp_typescript
         run: |
-          cd BingoApp_typescript # ★これはそのまま
+
           npm install
+          working-directory: BingoApp_typescript
 
       - name: Build project
         run: |
-          cd BingoApp_typescript 
+
           npm run build
+          working-directory: BingoApp_typescript
 
       - name: Deploy to GitHub Pages 
         uses: peaceiris/actions-gh-pages@v3
