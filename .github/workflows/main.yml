@@ -32,16 +32,12 @@ jobs:
           node-version: '22.17.0'
 
       - name: Install dependencies for BingoApp_typescript
-        run: |
-
-          npm install
-          working-directory: BingoApp_typescript
+        run: npm install
+        working-directory: BingoApp_typescript
 
       - name: Build project
-        run: |
-
-          npm run build
-          working-directory: BingoApp_typescript
+        run: npm run build
+        working-directory: BingoApp_typescript
 
       - name: Deploy to GitHub Pages 
         uses: peaceiris/actions-gh-pages@v3
