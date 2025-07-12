@@ -31,7 +31,10 @@ jobs:
           npm install
 
       - name: Build project
-        run: npm run build # ★あなたのビルドコマンドに合わせてください
+      
+        run: |
+        cd BingoApp_typescript #
+        npm run build # ★あなたのビルドコマンドに合わせてください
 
       - name: Deploy to GitHub Pages 
         uses: peaceiris/actions-gh-pages@v3
