@@ -1,0 +1,38 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main 
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository and submodules
+        uses: actions/checkout@v4
+        with:
+          # メインリポジトリをクローンするための設定
+          repository: ${{ github.repository }}
+          ref: ${{ github.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }} # GitHub Pagesデプロイで必要
+
+          # ★プライベートサブモジュールをSSHでクローンするための設定
+          submodules: true # サブモジュールをクローンすることを指定
+          ssh-key: ${{ mysshkey }} # 登録したSSH秘密鍵のシークレット名
+
+      - name: Set up Node.js 
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.17.0' # ★あなたのプロジェクトに必要なNode.jsバージョンに合わせる
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build # ★あなたのビルドコマンドに合わせてください
+
+      - name: Deploy to GitHub Pages 
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./ # ★デプロイするファイルのディレクトリに合わせてください (例: ./dist, ./buildなど)
