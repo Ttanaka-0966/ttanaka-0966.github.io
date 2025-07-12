@@ -1,4 +1,15 @@
 import { useState } from "react";
+import { useEffect } from "react";
+
+import { useMediaQuery } from 'react-responsive'
+const Desktop = ({ children }: { children: React.ReactNode }) => {
+  const isDesktop = useMediaQuery({ minWidth: 768 })
+  return isDesktop ? children : null
+}
+const Mobile = ({ children}: { children: React.ReactNode }) => {
+  const isMobile = useMediaQuery({ maxWidth: 767 })
+  return isMobile ? children : null
+}
 
 interface SquareProps {
 	spot: number;
@@ -165,7 +176,7 @@ function Board({
 	);
 }
 
-export default function Game() {
+function Game({ gameset }: { gameset: () => void }) {
 	const [historyB, setHistoryB] = useState<number[][]>([Array(9).fill(null)]);
 	const [historyR, setHistoryR] = useState<number[][]>([Array(9).fill(null)]);
 	const [currentMoveB, setCurrentMoveB] = useState(0);
@@ -189,15 +200,17 @@ export default function Game() {
 	}
 
 	const moves = historyB.map((_squares, move = currentMoveB + currentMoveR) => {
-		const move_ = move;
 		let description: string;
-		if (move > 0) {
+		if (move > 0 && move < 40) {
 			description = `Go to move #${move}`;
-		} else {
+		} else if (move === 0) {
 			description = "Go to game start";
+		} else {
+			description = "Go to game end";
+			gameset();
 		}
 		return (
-			<li key={move_}>
+			<li key={description}>
 				<button type="button" onClick={() => jumpTo(move)}>
 					{description}
 				</button>
@@ -205,9 +218,21 @@ export default function Game() {
 		);
 	});
 
+	const winner = calculateWinner(
+		currentSquaresB,
+		currentSquaresR,
+		(currentMoveB + currentMoveR) / 2,
+	);
+
+	useEffect(() => {
+		if (winner) {
+			gameset();
+		}
+	}, [winner, gameset]);
+
 	return (
 		<div className="game">
-			<div className="game-board">
+			<div>
 				<Board
 					BlueIsNext={BlueIsNext}
 					squaresB={currentSquaresB}
@@ -218,6 +243,9 @@ export default function Game() {
 			</div>
 			<div className="game-info">
 				<ol>{moves}</ol>
+				<button type="button" onClick={() => gameset()}>
+					gameset
+				</button>
 			</div>
 		</div>
 	);
@@ -272,4 +300,58 @@ function calculateWinner(squaresB: number[], squaresR: number[], move: number) {
 		if (sumB < sumR) return `Red:${sum}points`;
 	}
 	return null;
+}
+
+interface ResultProps {
+	winner: string | null;
+	winningpoints: number;
+	Restart: () => void;
+}
+
+function Result({ winner, winningpoints, Restart }: ResultProps) {
+	let resultColor:string|null;
+	switch(winner){
+		case "Blue":
+			resultColor = "font-Blue";
+			break;
+		case "Red":
+			resultColor = "font-Red";
+			break;
+		default:
+			resultColor = "";
+			break;
+	}
+		return (
+		<div className="result">
+			<div className={resultColor}>{winner} wins! Winning:{winningpoints}</div>
+			<button type="button" onClick={Restart}>
+				{"Restart"}
+			</button>
+		</div>
+	);
+}
+
+export default function PageswitchWrapper() {
+	const [page, setPage] = useState(true);
+
+	return (
+		<>
+			{page ? (
+				<>
+					<Desktop>
+						<div className="desktop">
+						<Game gameset={() => setPage(false)} />
+							</div>
+					</Desktop>
+					<Mobile>
+						<div className="mobile">
+							<Game gameset={() => setPage(false)} />
+						</div>
+					</Mobile>
+				</>
+			) : (
+				<Result winner={'Blue'} winningpoints={1} Restart={() => setPage(true)} />
+			)}
+		</>
+	);
 }

@@ -50,12 +50,6 @@ ul {
 	box-sizing: border-box;
 }
 
-body {
-	font-family: sans-serif;
-	margin: 20px;
-	padding: 0;
-}
-
 .square {
 	background: #fff;
 	border: 1px solid #999;
@@ -64,7 +58,7 @@ body {
 	font-weight: bold;
 	line-height: 34px;
 	height: 150px;
-	margin-right: 30px;
+	margin-left: 30px;
 	margin-top: 30px;
 	padding: 0;
 	text-align: center;
@@ -89,7 +83,7 @@ body {
 }
 
 .game-info {
-	margin-left: 10px;
+	margin-left: 20px;
 	margin-top: 0px;
 	margin-bottom: 0px;
 }
@@ -108,4 +102,31 @@ body {
 }
 .font-Red {
 	color: red;
+}
+.result {
+	text-align: center;
+	font-size: 48px;
+	margin-top: 20px;
+	margin-left: 30px;
+	margin-right: 50px;
+}
+.desktop{
+ .square{
+  width: 150px;
+  height: 150px;
+ }
+}
+.mobile{
+	.square{
+	  margin-left: 5px;
+	  margin-top: 5px;
+	  width: 55px;
+	  height: 55px;
+	  font-size: 18px;
+	  line-height: 18px;
+	 }
+	 .game-info{
+		margin-left: 10px;
+		margin-top: 30px;
+	 }
 }
